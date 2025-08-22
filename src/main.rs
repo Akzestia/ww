@@ -13,7 +13,7 @@
 //!
 //! ## Architecture
 //!
-//! - **Storage:** ScyllaDB keyspace `zetax`, table `projects(name, env_variables map<text,text>)`.
+//! - **Storage:** ScyllaDB keyspace `ww`, table `projects(name, env_variables map<text,text>)`.
 //! - **Transport:** Unix socket (default: `/tmp/ww.sock`) with a minimal
 //!   line-oriented protocol.
 //! - **Client config:** `~/.config/ww/config.toml` mapping directories → projects.
@@ -643,7 +643,7 @@ async fn serve(node: &str, user: &str, pass: &str, socket_path: &str) -> Result<
     eprintln!("Connected to Scylla in {:?}.", t0.elapsed());
 
     session
-        .use_keyspace("zetax", false)
+        .use_keyspace("ww", false)
         .await
         .context("use keyspace")?;
 
@@ -708,9 +708,9 @@ async fn serve(node: &str, user: &str, pass: &str, socket_path: &str) -> Result<
     }
 }
 
-/// Row mapping for Scylla `zetax.projects` query.
+/// Row mapping for Scylla `ww.projects` query.
 #[derive(DeserializeRow)]
-struct ZetaxVars {
+struct wwVars {
     /// Map of environment variables for the project.
     env_variables: HashMap<String, String>,
 }
@@ -727,14 +727,14 @@ async fn run_projects_query(session: &Session, project_name: &str) -> Result<Str
     }
 
     let stmt = session
-        .prepare("SELECT env_variables FROM zetax.projects WHERE name = ?")
+        .prepare("SELECT env_variables FROM ww.projects WHERE name = ?")
         .await?;
     let pager = session.execute_unpaged(&stmt, (project_name,)).await?;
     let rows = pager.into_rows_result()?;
 
     let mut out = String::new();
-    for row in rows.rows::<ZetaxVars>()? {
-        let vars: ZetaxVars = row?;
+    for row in rows.rows::<wwVars>()? {
+        let vars: wwVars = row?;
         for (key, value) in vars.env_variables.iter() {
             out.push_str(&format!("{}={}\n", key, value));
         }
@@ -748,7 +748,7 @@ async fn run_projects_query(session: &Session, project_name: &str) -> Result<Str
 async fn project_exists(session: &Session, name: &str) -> Result<bool> {
     // Prepare and execute your query
     let stmt = session
-        .prepare("SELECT name FROM zetax.projects WHERE name = ?")
+        .prepare("SELECT name FROM ww.projects WHERE name = ?")
         .await?;
     let qr = session.execute_unpaged(&stmt, (name,)).await?;
 
@@ -768,7 +768,7 @@ async fn ensure_project_exists(session: &Session, name: &str) -> Result<()> {
         return Ok(());
     }
     let stmt = session
-        .prepare("INSERT INTO zetax.projects (name, env_variables) VALUES (?, ?)")
+        .prepare("INSERT INTO ww.projects (name, env_variables) VALUES (?, ?)")
         .await?;
     let empty: HashMap<String, String> = HashMap::new();
     session.execute_unpaged(&stmt, (name, empty)).await?;
@@ -792,7 +792,7 @@ async fn handle_set_env(session: &Session, rest: &str) -> Result<()> {
 
     let stmt = session
         .prepare(
-            "UPDATE zetax.projects SET env_variables[?] = ? \
+            "UPDATE ww.projects SET env_variables[?] = ? \
              WHERE name = ?",
         )
         .await?;

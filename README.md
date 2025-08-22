@@ -1,5 +1,7 @@
 # ww — Scylla‑backed secrets daemon + CLI
 
+[![Crates.io](https://img.shields.io/crates/v/ww.svg)](https://crates.io/crates/ww)
+
 `ww` is a **Doppler‑like secret manager** built on [ScyllaDB](https://www.scylladb.com/). It runs a background daemon that talks to Scylla and exposes project secrets over a local **Unix socket**. The companion **CLI** can inject environment variables into commands, download them in multiple formats, or update individual keys.
 
 ---

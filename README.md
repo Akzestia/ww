@@ -1,4 +1,4 @@
-# ww — Scylla‑backed secrets daemon + CLI
+# ww 
 
 [![Crates.io](https://img.shields.io/crates/v/ww.svg)](https://crates.io/crates/ww)
 

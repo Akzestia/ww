@@ -18,8 +18,8 @@
 ---
 
 > [!IMPORTANT]
-> This README.md doesn't include db setup! </br>
-> Refer to the official ScyllaDb [guide](https://docs.scylladb.com/manual/stable/getting-started/install-scylla/run-in-docker.html)
+> This README does not cover database setup.
+> Please follow the official ScyllaDB [installation & Docker guide](https://docs.scylladb.com/manual/stable/getting-started/install-scylla/run-in-docker.html) before running `ww`.
 
 
 

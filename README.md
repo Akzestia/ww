@@ -39,7 +39,7 @@ ww set-env --name API_KEY --val abc123
 ### 4. Run your app with secrets injected
 
 ```bash
-ww run -- node app.js
+ww node app.js
 ```
 
 ---

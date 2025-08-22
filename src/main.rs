@@ -710,7 +710,7 @@ async fn serve(node: &str, user: &str, pass: &str, socket_path: &str) -> Result<
 
 /// Row mapping for Scylla `ww.projects` query.
 #[derive(DeserializeRow)]
-struct wwVars {
+struct WwVars {
     /// Map of environment variables for the project.
     env_variables: HashMap<String, String>,
 }
@@ -733,8 +733,8 @@ async fn run_projects_query(session: &Session, project_name: &str) -> Result<Str
     let rows = pager.into_rows_result()?;
 
     let mut out = String::new();
-    for row in rows.rows::<wwVars>()? {
-        let vars: wwVars = row?;
+    for row in rows.rows::<WwVars>()? {
+        let vars: WwVars = row?;
         for (key, value) in vars.env_variables.iter() {
             out.push_str(&format!("{}={}\n", key, value));
         }

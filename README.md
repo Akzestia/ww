@@ -17,6 +17,12 @@
 
 ---
 
+> [!IMPORTANT]
+> This README.md doesn't include db setup! </br>
+> Refer to the official ScyllaDb [guide](https://docs.scylladb.com/manual/stable/getting-started/install-scylla/run-in-docker.html)
+
+
+
 ## 🚀 Quick Start
 
 ### 1. Start the daemon

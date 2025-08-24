@@ -6,7 +6,7 @@ license = "MIT"
 readme = "README.md"
 categories = ["command-line-utilities", "config", "cryptography"]
 keywords = ["scylla", "secrets", "env", "cli", "daemon"]
-repository = "https://github.com/Akzestia/cql-lsp"
+repository = "https://github.com/Akzestia/ww"
 version = "1.0.0"
 edition = "2024"
 
